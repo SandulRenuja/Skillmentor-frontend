@@ -23,6 +23,13 @@ export default function Navbar() {
         >
           Login
         </NavLink>
+
+        <NavLink
+          to="/sessin"
+          className={({ isActive }: { isActive: boolean }) => (isActive ? "text-amber-400" : "")}
+        >
+          Session
+        </NavLink>
       </div>
   </nav>
   );

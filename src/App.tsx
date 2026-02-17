@@ -3,6 +3,8 @@ import Layout from "./components/Layout";
 import HomePage from "./Pages/HomePAge";
 import DashboardPage from "./Pages/DashboardPage";
 import LoginPage from "./Pages/LoginPAge";
+import SessionsPage from "./Pages/SessionsPage";
+
 
 function App() {
   return(
@@ -11,6 +13,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/session" element={<SessionsPage/>} />
           </Route>
 
      
