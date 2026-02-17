@@ -25,11 +25,12 @@ export default function Navbar() {
         </NavLink>
 
         <NavLink
-          to="/sessin"
+          to="/sessions"
           className={({ isActive }: { isActive: boolean }) => (isActive ? "text-amber-400" : "")}
         >
           Session
         </NavLink>
+        
       </div>
   </nav>
   );

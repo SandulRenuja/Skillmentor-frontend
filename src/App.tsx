@@ -4,6 +4,7 @@ import HomePage from "./Pages/HomePAge";
 import DashboardPage from "./Pages/DashboardPage";
 import LoginPage from "./Pages/LoginPAge";
 import SessionsPage from "./Pages/SessionsPage";
+import SessionPage from "./Pages/SessionPAge";
 
 
 function App() {
@@ -13,7 +14,8 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/session" element={<SessionsPage/>} />
+          <Route path="/sessions" element={<SessionsPage/>} />
+          <Route path="/sessions/:sessionId/details/:sessionTitle" element={<SessionPage/>} />
           </Route>
 
      
