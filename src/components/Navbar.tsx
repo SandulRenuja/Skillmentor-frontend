@@ -1,3 +1,4 @@
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
 import { NavLink } from "react-router";
 
 export default function Navbar() {
@@ -30,7 +31,17 @@ export default function Navbar() {
         >
           Session
         </NavLink>
-        
+      </div>
+
+      <div className="flex gap-2">
+        <SignedOut>
+        <SignInButton />
+        <SignUpButton />
+      </SignedOut>
+      {/* Show the user button when the user is signed in */}
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
       </div>
   </nav>
   );
