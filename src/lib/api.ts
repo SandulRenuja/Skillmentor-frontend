@@ -61,24 +61,4 @@ export async function getMyEnrollments(token: string): Promise<Enrollment[]> {
 
 
 
-export async function getAllSessions(token: string): Promise<Enrollment[]> {
-  const res = await fetchWithAuth("/api/v1/sessions/all", token);
-  return res.json();
-}
 
-export async function createSubject(token: string, data: any) {
-  const res = await fetchWithAuth("/api/v1/subjects", token, {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-  return res.json();
-}
-
-export async function updateSessionStatus(token: string, sessionId: number, status: string) {
-  // This would call a PUT endpoint to update status
-  const res = await fetchWithAuth(`/api/v1/sessions/${sessionId}`, token, {
-    method: "PUT",
-    body: JSON.stringify({ sessionStatus: status }),
-  });
-  return res.json();
-}
