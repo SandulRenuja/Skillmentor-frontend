@@ -26,16 +26,33 @@ const mentorSchema = z.object({
   title: z.string().max(100).optional().or(z.literal("")),
   profession: z.string().max(100).optional().or(z.literal("")),
   company: z.string().max(100).optional().or(z.literal("")),
-  experienceYears: z.coerce
-    .number()
-    .min(0, "Must be 0 or more")
-    .max(60, "Must be 60 or less"),
+  // Use string in the form, parse to number on submit
+  experienceYears: z
+    .string()
+    .min(1, "Required")
+    .refine((v) => !isNaN(Number(v)) && Number(v) >= 0 && Number(v) <= 60, {
+      message: "Must be a number between 0 and 60",
+    }),
   bio: z.string().max(500).optional().or(z.literal("")),
-  profileImageUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  profileImageUrl: z
+    .string()
+    .url("Must be a valid URL")
+    .optional()
+    .or(z.literal("")),
   isCertified: z.boolean(),
   startYear: z.string().max(10).optional().or(z.literal("")),
-  positiveReviews: z.coerce.number().min(0).max(100).optional(),
-  totalEnrollments: z.coerce.number().min(0).optional(),
+  positiveReviews: z
+    .string()
+    .optional()
+    .refine((v) => v === "" || v === undefined || (!isNaN(Number(v)) && Number(v) >= 0 && Number(v) <= 100), {
+      message: "Must be 0–100",
+    }),
+  totalEnrollments: z
+    .string()
+    .optional()
+    .refine((v) => v === "" || v === undefined || (!isNaN(Number(v)) && Number(v) >= 0), {
+      message: "Must be 0 or more",
+    }),
 });
 
 type MentorFormValues = z.infer<typeof mentorSchema>;
@@ -95,9 +112,9 @@ export default function CreateMentorPage() {
     resolver: zodResolver(mentorSchema),
     defaultValues: {
       isCertified: false,
-      experienceYears: 0,
-      positiveReviews: 0,
-      totalEnrollments: 0,
+      experienceYears: "0",
+      positiveReviews: "0",
+      totalEnrollments: "0",
     },
   });
 
@@ -110,16 +127,24 @@ export default function CreateMentorPage() {
     try {
       const token = await getToken({ template: "skillmentor-auth" });
       if (!token) throw new Error("Not authenticated");
+
       await adminCreateMentor(token, {
-        ...data,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
         phoneNumber: data.phoneNumber || undefined,
         title: data.title || undefined,
         profession: data.profession || undefined,
         company: data.company || undefined,
+        experienceYears: Number(data.experienceYears),
         bio: data.bio || undefined,
         profileImageUrl: data.profileImageUrl || undefined,
+        isCertified: data.isCertified,
         startYear: data.startYear || undefined,
+        positiveReviews: data.positiveReviews ? Number(data.positiveReviews) : undefined,
+        totalEnrollments: data.totalEnrollments ? Number(data.totalEnrollments) : undefined,
       });
+
       setStatus("success");
       reset();
     } catch (e: unknown) {
@@ -374,7 +399,7 @@ export default function CreateMentorPage() {
                       ✓ Certified
                     </span>
                   )}
-                  {watch("experienceYears") > 0 && (
+                  {watch("experienceYears") && Number(watch("experienceYears")) > 0 && (
                     <span className="bg-zinc-800 text-zinc-400 text-xs px-2 py-0.5 rounded-full">
                       {watch("experienceYears")}y exp
                     </span>
