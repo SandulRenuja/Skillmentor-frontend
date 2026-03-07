@@ -48,64 +48,29 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-function checkIsAdmin(user: ReturnType<typeof useUser>["user"]): boolean {
-  if (!user) return false;
-
-  const metadata = user.publicMetadata;
-  if (!metadata) return false;
-
-  // Check roles array: ["ADMIN"] or ["admin"]
-  const rolesArray = metadata.roles as string[] | undefined;
-  if (Array.isArray(rolesArray)) {
-    const hasAdmin = rolesArray.some(
-      (r) => r.toUpperCase() === "ADMIN"
-    );
-    if (hasAdmin) return true;
-  }
-
-  // Check single role string: "admin" or "ADMIN"
-  const roleSingle = metadata.role as string | undefined;
-  if (typeof roleSingle === "string") {
-    if (roleSingle.toUpperCase() === "ADMIN") return true;
-  }
-
-  // Check superUser flag (fallback)
-  if (metadata.superUser === true) return true;
-
-  return false;
-}
-
 export default function AdminLayout() {
   const { isLoaded, isSignedIn, signOut } = useAuth();
-  const { user, isLoaded: userLoaded } = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Debug log — remove after fixing
-  useEffect(() => {
-    if (userLoaded && user) {
-      console.log("[AdminLayout] publicMetadata:", user.publicMetadata);
-      console.log("[AdminLayout] isAdmin:", checkIsAdmin(user));
-    }
-  }, [userLoaded, user]);
+  const isAdmin =
+    (user?.publicMetadata?.role as string) === "admin" ||
+    (user?.publicMetadata?.roles as string[])?.includes("ADMIN");
 
   useEffect(() => {
-    if (!isLoaded || !userLoaded) return;
-
+    if (!isLoaded) return;
     if (!isSignedIn) {
       navigate("/login");
       return;
     }
-
-    if (!checkIsAdmin(user)) {
-      console.warn("[AdminLayout] Not admin, redirecting to /dashboard");
+    if (!isAdmin) {
       navigate("/dashboard");
     }
-  }, [isLoaded, userLoaded, isSignedIn, user, navigate]);
+  }, [isLoaded, isSignedIn, isAdmin, navigate]);
 
-  // Wait for BOTH auth and user to be fully loaded before deciding
-  if (!isLoaded || !userLoaded) {
+  if (!isLoaded || !isSignedIn || !isAdmin) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
@@ -114,10 +79,6 @@ export default function AdminLayout() {
         </div>
       </div>
     );
-  }
-
-  if (!isSignedIn || !checkIsAdmin(user)) {
-    return null;
   }
 
   const isActive = (path: string) => {
@@ -174,9 +135,7 @@ export default function AdminLayout() {
               <span
                 className={cn(
                   "transition-colors",
-                  isActive(item.path)
-                    ? "text-amber-400"
-                    : "group-hover:text-white",
+                  isActive(item.path) ? "text-amber-400" : "group-hover:text-white",
                 )}
               >
                 {item.icon}
@@ -240,11 +199,7 @@ export default function AdminLayout() {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="text-zinc-400 hover:text-white transition-colors"
           >
-            {sidebarOpen ? (
-              <X className="size-5" />
-            ) : (
-              <Menu className="size-5" />
-            )}
+            {sidebarOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
 
