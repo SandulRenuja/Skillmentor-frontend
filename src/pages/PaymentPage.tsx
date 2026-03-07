@@ -64,12 +64,12 @@ export default function PaymentPage() {
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    
     } catch (error) {
       toast({
         title: "Error",
         description:
-          "There was a problem scheduling your session. Please try again.",
+          "There was a problem scheduling your session. Please try again",
         variant: "destructive",
       });
       setIsUploading(false);

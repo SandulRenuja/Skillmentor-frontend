@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <ToastProvider>
       <section className="min-h-screen flex flex-col">
         <Navigation />
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
         <Footer />
       </section>
       <ToastViewport />
