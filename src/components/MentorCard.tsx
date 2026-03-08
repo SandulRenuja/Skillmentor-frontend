@@ -7,12 +7,14 @@ import {
   GraduationCap,
   ShieldCheck,
   ThumbsUp,
+  ArrowRight,
 } from "lucide-react";
 import type { Mentor } from "@/types";
 import { SchedulingModal } from "@/components/SchedulingModel";
 import { SignupDialog } from "@/components/SignUpDialog";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-react";
+import { Link } from "react-router";
 
 interface MentorCardProps {
   mentor: Mentor;
@@ -93,24 +95,22 @@ export function MentorCard({ mentor }: MentorCardProps) {
           </div>
 
           <div className="mb-4 grow">
-            <div>
-              <p
-                className={cn(
-                  "text-sm transition-all duration-300 ease-in-out",
-                  !isExpanded && bioTooLong ? "line-clamp-3" : "",
-                )}
-              >
-                {bio}
-              </p>
-              {bioTooLong && (
-                <button
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-primary text-sm font-medium mt-1 hover:underline"
-                >
-                  {isExpanded ? "See less" : "See more"}
-                </button>
+            <p
+              className={cn(
+                "text-sm transition-all duration-300 ease-in-out",
+                !isExpanded && bioTooLong ? "line-clamp-3" : "",
               )}
-            </div>
+            >
+              {bio}
+            </p>
+            {bioTooLong && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-primary text-sm font-medium mt-1 hover:underline"
+              >
+                {isExpanded ? "See less" : "See more"}
+              </button>
+            )}
           </div>
 
           <div className="mt-auto">
@@ -122,7 +122,6 @@ export function MentorCard({ mentor }: MentorCardProps) {
                   {mentor.totalEnrollments} Enrollments
                 </span>
               </div>
-
               {mentor.isCertified && (
                 <div className="flex items-center space-x-2">
                   <ShieldCheck className="w-4 h-4" />
@@ -133,7 +132,15 @@ export function MentorCard({ mentor }: MentorCardProps) {
           </div>
         </div>
 
-        <div className="p-6 pt-0">
+        <div className="p-6 pt-0 flex flex-col gap-2">
+          {/* View full profile link */}
+          <Link
+            to={`/mentors/${mentor.id}`}
+            className="flex items-center justify-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            View full profile <ArrowRight className="size-3.5" />
+          </Link>
+
           <Button
             onClick={handleSchedule}
             className="w-full bg-black text-white hover:bg-black/90"

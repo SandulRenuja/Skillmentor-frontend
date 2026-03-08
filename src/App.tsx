@@ -10,14 +10,21 @@ import AdminOverviewPage from "./pages/Admin/AdminOverviewPage";
 import CreateMentorPage from "./pages/Admin/Creatementorpage";
 import CreateSubjectPage from "./pages/Admin/CreateSubjectPage";
 import ManageBookingsPage from "./pages/Admin/ManageBookingsPage";
+import MentorProfilePage from "./pages/Admin/MentorProfilePage";
 
 function App() {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
+          {/* Public */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          {/* Public mentor profile page */}
+          <Route path="/mentors/:id" element={<MentorProfilePage />} />
+
+          {/* Protected student routes */}
           <Route
             path="/dashboard"
             element={
@@ -45,15 +52,13 @@ function App() {
             }
           />
 
-
-           {/* Admin routes — wrapped in AdminLayout (no nav/footer) */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminOverviewPage />} />
-          <Route path="mentors" element={<CreateMentorPage />} />
-          <Route path="subjects" element={<CreateSubjectPage />} />
-          <Route path="bookings" element={<ManageBookingsPage />} />
-        </Route>
-
+          {/* Admin routes — wrapped in AdminLayout (no nav/footer) */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminOverviewPage />} />
+            <Route path="mentors" element={<CreateMentorPage />} />
+            <Route path="subjects" element={<CreateSubjectPage />} />
+            <Route path="bookings" element={<ManageBookingsPage />} />
+          </Route>
 
           <Route path="*" element={<LoginPage />} />
         </Routes>
