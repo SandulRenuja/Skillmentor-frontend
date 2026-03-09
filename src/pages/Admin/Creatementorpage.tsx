@@ -345,7 +345,7 @@ export default function CreateMentorPage() {
                 type="button"
                 variant="outline"
                 onClick={() => reset()}
-                className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                className="border-zinc-700 text-zinc-800 hover:bg-zinc-800 hover:text-white"
               >
                 Reset
               </Button>

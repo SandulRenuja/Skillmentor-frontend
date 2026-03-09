@@ -176,7 +176,7 @@ export default function DashboardPage() {
                   </div>
                 )}
 
-                {/* Write Review button — only for completed sessions without a review */}
+                {/* Review button — only for completed sessions without a review */}
                 {isCompleted && !hasReview && (
                   <Button
                     size="sm"
@@ -204,7 +204,7 @@ export default function DashboardPage() {
         })}
       </div>
 
-      {/* Write Review Dialog */}
+      {/* Review Dialog */}
       {reviewSession && (
         <WriteReviewDialog
           isOpen={!!reviewSession}

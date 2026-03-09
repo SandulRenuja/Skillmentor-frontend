@@ -83,7 +83,7 @@ export default function AdminOverviewPage() {
       <div>
         <h1 className="text-2xl font-bold text-white">Platform Overview</h1>
         <p className="text-zinc-400 text-sm mt-1">
-          Real-time snapshot of SkillMentor activity
+           SkillMentor activity
         </p>
       </div>
 
